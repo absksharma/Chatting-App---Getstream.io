@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <io.getstream.chat.android.ui.feature.messages.header.MessageListHeaderView
+        android:id="@+id/messageListHeaderView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:backgroundTint="@color/bg_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:streamUiMessageListHeaderShowUserAvatar="false"
+        app:streamUiMessageListHeaderTitleTextColor="@color/white" />
+
+    <io.getstream.chat.android.ui.feature.messages.list.MessageListView
+        android:id="@+id/messageListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/bg_color"
+        app:layout_constraintBottom_toTopOf="@+id/messageComposerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:streamUiMessageBackgroundColorMine="@color/color_mine"
+        app:streamUiMessageBackgroundColorTheirs="#FFFFFF"
+        app:streamUiMessageTextColorMine="@color/black"
+        app:streamUiMessageTextColorTheirs="@color/black"
+        app:streamUiPinnedMessageIndicatorTextFont="@font/opensans_regular"
+        app:layout_constraintTop_toBottomOf="@+id/messageListHeaderView" />
+
+    <io.getstream.chat.android.ui.feature.messages.composer.MessageComposerView
+        android:id="@+id/messageComposerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:streamUiMessageComposerAttachmentsButtonIconDrawable="@drawable/media_icon"
+        app:streamUiMessageComposerSendMessageButtonIconDrawable="@drawable/media_icon"
+        app:streamUiMessageComposerCommandsButtonVisible="false"
+        app:streamUiMessageComposerMessageInputHintText="Message" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

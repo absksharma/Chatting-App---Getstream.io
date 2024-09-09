@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_hint">Send a message and embark on a journey of discovery Together</string>
+    <string name="username">Username</string>
+    <string name="connections">Connections</string>
+</resources>

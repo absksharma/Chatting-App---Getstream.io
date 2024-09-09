@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Sacrena-Abhishek Test</string>
+    <string name="api_key">xsecs6xuwn2v</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="msg_hint">Send a message and embark on a journey of discovery Together</string>
+    <string name="username">Username</string>
+    <string name="connections">Connections</string>
+    <string name="online_indicator">Online Indicator</string>
+</resources>
