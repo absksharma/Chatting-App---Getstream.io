@@ -2,7 +2,7 @@ package com.absk.sacrena_abhishektest.di
 
 import android.content.Context
 import com.absk.sacrena_abhishektest.R
-import com.absk.sacrena_abhishektest.customviewholders.CustomChannelListItemViewHolderFactory
+import com.absk.sacrena_abhishektest.ui.chat.customviewholders.CustomChannelListItemViewHolderFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

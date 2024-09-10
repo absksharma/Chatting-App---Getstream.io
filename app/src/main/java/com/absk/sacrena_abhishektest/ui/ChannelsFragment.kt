@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.absk.sacrena_abhishektest.customviewholders.CustomChannelListItemViewHolderFactory
 import com.absk.sacrena_abhishektest.databinding.FragmentChannelsBinding
+import com.absk.sacrena_abhishektest.ui.chat.customviewholders.CustomChannelListItemViewHolderFactory
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.models.Channel
@@ -29,9 +29,6 @@ class ChannelsFragment : Fragment(),
 
     @Inject
     lateinit var client: ChatClient
-
-    @Inject
-    lateinit var channelClient: ChatClient
 
     @Inject
     lateinit var customChannelViewholder: CustomChannelListItemViewHolderFactory
@@ -79,7 +76,11 @@ class ChannelsFragment : Fragment(),
 
     override fun onClick(channel: Channel) {
         val action =
-            ChannelsFragmentDirections.actionChannelsFragmentToChatDetailsFragment(channel.cid)
+            ChannelsFragmentDirections.actionChannelsFragmentToChatDetailsFragment(
+                channelId = channel.cid,
+                cahnnelImage = (channel.members.find { it.user.id != client.getCurrentUser()?.id }?.user?.image ?: channel.image),
+                channelName = channel.name
+            )
         binding.root.findNavController().navigate(action)
     }
 }

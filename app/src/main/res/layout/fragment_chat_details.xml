@@ -3,34 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:windowSoftInputMode="adjustResize">
 
-    <io.getstream.chat.android.ui.feature.messages.header.MessageListHeaderView
+    <!--    <io.getstream.chat.android.ui.feature.messages.header.MessageListHeaderView-->
+    <!--        android:id="@+id/messageListHeaderView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="60dp"-->
+    <!--        android:backgroundTint="@color/bg_color"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:streamUiMessageListHeaderShowUserAvatar="false"-->
+    <!--        app:streamUiMessageListHeaderTitleTextColor="@color/white" />-->
+
+    <include
         android:id="@+id/messageListHeaderView"
-        android:layout_width="0dp"
+        layout="@layout/common_header_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:backgroundTint="@color/bg_color"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:streamUiMessageListHeaderShowUserAvatar="false"
-        app:streamUiMessageListHeaderTitleTextColor="@color/white" />
+        app:streamUiMessageListHeaderShowUserAvatar="false" />
 
     <io.getstream.chat.android.ui.feature.messages.list.MessageListView
         android:id="@+id/messageListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="5dp"
         android:background="@color/bg_color"
         app:layout_constraintBottom_toTopOf="@+id/messageComposerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageListHeaderView"
+        app:streamUiGiphyCardButtonDividerColor="@color/bg_color"
         app:streamUiMessageBackgroundColorMine="@color/color_mine"
         app:streamUiMessageBackgroundColorTheirs="#FFFFFF"
         app:streamUiMessageTextColorMine="@color/black"
         app:streamUiMessageTextColorTheirs="@color/black"
-        app:streamUiPinnedMessageIndicatorTextFont="@font/opensans_regular"
-        app:layout_constraintTop_toBottomOf="@+id/messageListHeaderView" />
+        app:streamUiMessagesStart="bottom" />
 
     <io.getstream.chat.android.ui.feature.messages.composer.MessageComposerView
         android:id="@+id/messageComposerView"
@@ -41,8 +55,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:streamUiMessageComposerAttachmentsButtonIconDrawable="@drawable/media_icon"
-        app:streamUiMessageComposerSendMessageButtonIconDrawable="@drawable/media_icon"
         app:streamUiMessageComposerCommandsButtonVisible="false"
-        app:streamUiMessageComposerMessageInputHintText="Message" />
+        app:streamUiMessageComposerMessageInputHintText="Message"
+        app:streamUiMessageComposerMessageInputTextColor="@color/white"
+        app:streamUiMessageComposerSendMessageButtonHeight="35dp"
+        app:streamUiMessageComposerSendMessageButtonIconDrawable="@drawable/send_active"
+        app:streamUiMessageComposerSendMessageButtonWidth="35dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

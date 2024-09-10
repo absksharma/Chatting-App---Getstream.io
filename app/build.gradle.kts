@@ -67,11 +67,15 @@ dependencies {
 
     //Dagger - Hilt
     implementation(libs.hilt.android.v2511)
+    implementation(libs.protolite.well.known.types)
     kapt(libs.hilt.android.compiler.v2511)
 
 
     // Navigation Component
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation("io.coil-kt:coil:2.7.0")
+
 
 }

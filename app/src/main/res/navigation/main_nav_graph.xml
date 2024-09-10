@@ -12,15 +12,29 @@
         tools:layout="@layout/fragment_channels">
         <action
             android:id="@+id/action_channelsFragment_to_chatDetailsFragment"
-            app:destination="@id/chatDetailsFragment" />
+            app:destination="@id/chatDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/channelsFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatDetailsFragment"
-        android:name="com.absk.sacrena_abhishektest.ui.ChatDetailsFragment"
+        android:name="com.absk.sacrena_abhishektest.ui.chat.ChatDetailsFragment"
         android:label="fragment_chat_details2"
         tools:layout="@layout/fragment_chat_details">
         <argument
             android:name="channelId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_chatDetailsFragment_to_channelsFragment"
+            app:destination="@id/channelsFragment" />
+        <argument
+            android:name="channelName"
+            app:argType="string" />
+        <argument
+            android:name="cahnnelImage"
             app:argType="string" />
     </fragment>
 </navigation>
