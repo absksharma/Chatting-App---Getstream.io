@@ -8,43 +8,54 @@ import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.enableSavedStateHandles
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.absk.sacrena_abhishektest.R
 import com.absk.sacrena_abhishektest.databinding.FragmentChatDetailsBinding
+import com.absk.sacrena_abhishektest.listeners.MessageItemListener
 import com.absk.sacrena_abhishektest.ui.chat.customviewholders.CustomMessageViewHolderFactory
 import com.absk.sacrena_abhishektest.utils.Utils.Companion.getInitials
+import com.absk.sacrena_abhishektest.utils.Utils.Companion.toTimeAgo
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.models.Message
 import io.getstream.chat.android.ui.common.state.messages.Edit
 import io.getstream.chat.android.ui.common.state.messages.MessageMode
 import io.getstream.chat.android.ui.common.state.messages.Reply
-import io.getstream.chat.android.ui.feature.messages.list.MessageListView
+import io.getstream.chat.android.ui.common.state.messages.list.DeleteMessage
+import io.getstream.chat.android.ui.common.state.messages.list.EditMessage
+import io.getstream.chat.android.ui.common.state.messages.list.SendAnyway
 import io.getstream.chat.android.ui.viewmodel.messages.MessageComposerViewModel
 import io.getstream.chat.android.ui.viewmodel.messages.MessageListViewModel
 import io.getstream.chat.android.ui.viewmodel.messages.MessageListViewModelFactory
 import io.getstream.chat.android.ui.viewmodel.messages.bindView
 
 @AndroidEntryPoint
-class ChatDetailsFragment : Fragment() {
-    private lateinit var binding: FragmentChatDetailsBinding
+class ChatDetailsFragment : Fragment(), MessageItemListener {
+    private var _binding: FragmentChatDetailsBinding? = null
+    private val binding get() = _binding!!
     private val args: ChatDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentChatDetailsBinding.inflate(layoutInflater, container, false)
-
-        setUpHeader()
-        setupMessages()
+        if (_binding == null) {
+            _binding = FragmentChatDetailsBinding.inflate(layoutInflater, container, false)
+        }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpHeader()
+        setEmptyView()
+        setupMessages()
     }
 
     private fun setUpHeader() {
@@ -62,23 +73,34 @@ class ChatDetailsFragment : Fragment() {
         }
     }
 
+    private fun setEmptyView() {
+        val textView = TextView(context).apply {
+            text = "This is the beginning of your conversation\nwith ${args.channelName}"
+            setTextColor(ContextCompat.getColor(context, R.color.text_hint))
+        }
+        binding.messageListView.setEmptyStateView(
+            view = textView, layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+            )
+        )
+    }
+
     private fun setupMessages() {
         binding.apply {
-
             val factory = MessageListViewModelFactory(requireActivity(), args.channelId)
-
             val messageListViewModel: MessageListViewModel by viewModels { factory }
             val messageInputViewModel: MessageComposerViewModel by viewModels { factory }
 
-
             messageListViewModel.bindView(messageListView, viewLifecycleOwner)
             messageInputViewModel.bindView(messageComposerView, viewLifecycleOwner)
-            messageListView.apply {
-                setMessageViewHolderFactory(CustomMessageViewHolderFactory())
-                setReactionsEnabled(true)
-                setDeleteMessageEnabled(true)
-                setEditMessageEnabled(true)
-                setOnUserReactionClickListener(null)
+
+            if (!messageListView.isAdapterInitialized()) {
+                messageListView.apply {
+                    setMessageViewHolderFactory(CustomMessageViewHolderFactory(this@ChatDetailsFragment))
+//                setReactionsEnabled(true)
+                }
             }
             messageListViewModel.mode.observe(viewLifecycleOwner) { mode ->
                 when (mode) {
@@ -98,24 +120,11 @@ class ChatDetailsFragment : Fragment() {
                 messageInputViewModel.performMessageAction(Edit(message))
             }
 
-            val textView = TextView(context).apply {
-                text = "This is the beginning of your conversation\nwith ${args.channelName}"
-                setTextColor(ContextCompat.getColor(context, R.color.text_hint))
-            }
-            messageListView.setEmptyStateView(
-                view = textView,
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    Gravity.CENTER
-                )
-            )
-            messageListView.setReactionsEnabled(true)
             val backHandler = {
                 messageListViewModel.onEvent(MessageListViewModel.Event.BackButtonPressed)
             }
 
-            binding.messageListHeaderView.backButton.setOnClickListener {
+            messageListHeaderView.backButton.setOnClickListener {
                 backHandler()
                 findNavController().popBackStack()
             }
@@ -124,5 +133,14 @@ class ChatDetailsFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    override fun onAttachmentClick(message: Message) {
+        val action = ChatDetailsFragmentDirections.actionChatDetailsFragmentToImagepreviewFragment(
+            imgURL = message.attachments[0].imageUrl.toString(),
+            imageDesciption = message.attachments[0].name,
+            sendAt = message.createdAt?.toTimeAgo
+        )
+        binding.root.findNavController().navigate(action)
     }
 }

@@ -36,5 +36,35 @@
         <argument
             android:name="cahnnelImage"
             app:argType="string" />
+        <action
+            android:id="@+id/action_chatDetailsFragment_to_imagepreviewFragment"
+            app:destination="@id/imagepreviewFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/chatDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imagepreviewFragment"
+        android:name="com.absk.sacrena_abhishektest.ui.imagereview.FullScreenImageFragment"
+        android:label="fragment_imagepreview"
+        tools:layout="@layout/fragment_fullscreeenimage">
+        <argument
+            android:name="imgURL"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_imagepreviewFragment_to_chatDetailsFragment2"
+            app:destination="@id/chatDetailsFragment" />
+        <argument
+            android:name="imageDesciption"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="sendAt"
+            app:argType="string"
+            app:nullable="true" />
+
+
     </fragment>
 </navigation>

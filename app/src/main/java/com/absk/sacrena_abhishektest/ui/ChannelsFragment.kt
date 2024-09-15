@@ -1,5 +1,6 @@
 package com.absk.sacrena_abhishektest.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,7 @@ import io.getstream.chat.android.ui.viewmodel.channels.bindView
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChannelsFragment : Fragment(),
-    ChannelListView.ChannelClickListener {
+class ChannelsFragment : Fragment(), ChannelListView.ChannelClickListener {
     private lateinit var binding: FragmentChannelsBinding
 
     @Inject
@@ -51,7 +51,9 @@ class ChannelsFragment : Fragment(),
     }
 
 
+    @SuppressLint("CheckResult")
     private fun setUpChannel() {
+        client.disconnectSocket()
         client.connectUser(user = user, token = client.devToken(user.id)).enqueue {
             if (it.isSuccess) {
                 val channelListFactory = ChannelListViewModelFactory(
@@ -75,12 +77,12 @@ class ChannelsFragment : Fragment(),
     }
 
     override fun onClick(channel: Channel) {
-        val action =
-            ChannelsFragmentDirections.actionChannelsFragmentToChatDetailsFragment(
-                channelId = channel.cid,
-                cahnnelImage = (channel.members.find { it.user.id != client.getCurrentUser()?.id }?.user?.image ?: channel.image),
-                channelName = channel.name
-            )
+        val action = ChannelsFragmentDirections.actionChannelsFragmentToChatDetailsFragment(
+            channelId = channel.cid,
+            cahnnelImage = (channel.members.find { it.user.id != client.getCurrentUser()?.id }?.user?.image
+                ?: channel.image),
+            channelName = channel.name
+        )
         binding.root.findNavController().navigate(action)
     }
 }

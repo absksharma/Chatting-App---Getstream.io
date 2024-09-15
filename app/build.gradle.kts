@@ -68,6 +68,7 @@ dependencies {
     //Dagger - Hilt
     implementation(libs.hilt.android.v2511)
     implementation(libs.protolite.well.known.types)
+    implementation(libs.androidx.startup.runtime)
     kapt(libs.hilt.android.compiler.v2511)
 
 

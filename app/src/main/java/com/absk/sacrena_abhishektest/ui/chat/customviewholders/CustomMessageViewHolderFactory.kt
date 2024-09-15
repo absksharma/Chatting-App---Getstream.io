@@ -1,11 +1,15 @@
 package com.absk.sacrena_abhishektest.ui.chat.customviewholders
 
 import android.view.ViewGroup
+import com.absk.sacrena_abhishektest.listeners.MessageItemListener
 import io.getstream.chat.android.ui.feature.messages.list.adapter.BaseMessageItemViewHolder
 import io.getstream.chat.android.ui.feature.messages.list.adapter.MessageListItem
 import io.getstream.chat.android.ui.feature.messages.list.adapter.MessageListItemViewHolderFactory
 
-class CustomMessageViewHolderFactory : MessageListItemViewHolderFactory() {
+class CustomMessageViewHolderFactory(
+    private val itemListener: MessageItemListener
+) : MessageListItemViewHolderFactory() {
+
     override fun getItemViewType(item: MessageListItem): Int {
         return when {
             item is MessageListItem.MessageItem && item.isTheirs -> {
@@ -57,11 +61,11 @@ class CustomMessageViewHolderFactory : MessageListItemViewHolderFactory() {
     ): BaseMessageItemViewHolder<out MessageListItem> {
         return when (viewType) {
             THEIR_VIEW_HOLDER_TYPE -> {
-                CustomTheirViewHolder(parentView)
+                CustomTheirViewHolder(itemListener, parentView)
             }
 
             MINE_VIEW_HOLDER_TYPE -> {
-                CustomMineViewHolder(parentView)
+                CustomMineViewHolder(itemListener, parentView)
             }
 
             SEPARATOR_VIEW_HOLDER_TYPE -> {
